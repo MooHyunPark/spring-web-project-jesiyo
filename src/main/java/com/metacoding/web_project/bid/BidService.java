@@ -48,5 +48,9 @@ public class BidService {
         }
         return dtoList;
     }
+
+    public void deleteByGoodsId(int id) {
+        bidRepository.deleteByGoodsId(id);
+    }
 }
 
