@@ -9,12 +9,13 @@
   <link rel="stylesheet" type="text/css" href="/css/nav.css">
   <link rel="stylesheet" type="text/css" href="/css/header.css">
 
+  <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
 
 {{>layout/header}}
-<div class="container change-pw" style="margin: auto">
-  <div class="t1-change-pw-inner" style="width: 40%">
+<div class="container change-pw">
+  <div class="t1-change-pw-inner">
     <h1 class="t1-change-pw-logo">
       <a href="/" class="link">
         <img src="logo.png">
@@ -23,7 +24,7 @@
 
 
     <div>
-      <form class="t1-login-form" method="post" action="/change-pw" onsubmit="return onSubmitCheck();">
+      <form class="t1-login-form" method="post" action="/change-pw/{{id}}" onsubmit="return onSubmitCheck();">
         <h1>비밀번호 변경 페이지</h1>
         <div class="input-group mb-3">
           <input type="password" name="password" id="pw1" class="form-control" placeholder="변경하실 비밀번호를 입력하세요">

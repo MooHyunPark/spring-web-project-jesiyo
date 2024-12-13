@@ -90,49 +90,13 @@ public class UserController {
         return "user-find";
     }
 
-/*    @PostMapping("/user-find")
-    public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO, Model model) {
-        String result = String.valueOf(userService.유저찾기(findUserDTO));
-        System.out.println(result);
-        return result;
-    }*/
-@PostMapping("/user-find")
-@ResponseBody
-public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO) {
-    try {
-        // userService를 통해 유저를 Optional로 반환
-        String result = String.valueOf(userService.유저찾기(findUserDTO));
-        // Optional 검사 후 유저 정보 반환
-        if (result != null) {
-            // Map으로 JSON 형태의 응답 생성
-            return ResponseEntity.ok(Map.of("username", result));
-        } else {
-            // 유저가 없을 경우 에러 메시지와 함께 404 상태 반환
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
-        }
-    } catch (Exception e) {
-        // 예외 발생 시 500 상태와 에러 메시지 반환
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal server error", "message", e.getMessage()));
-    }
-}
-
-
-/*    @PostMapping("/user-find")
+    @PostMapping("/user-find-id")
     @ResponseBody
-    public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO) {
-        // userService를 통해 유저를 Optional로 반환
-        Optional<User> result = userService.유저찾기(findUserDTO.getTel(), findUserDTO.getName());
+    public ResponseEntity<?> findId(@RequestBody UserRequest.FindUserDTO findUserDTO) {
+        String result = String.valueOf(userService.아이디찾기(findUserDTO));
+        return ResponseEntity.ok(Map.of("result", result));
 
-        // Optional 검사 후 유저 정보 반환
-        if (result.isPresent()) {
-            User user = result.get();
-            // Map으로 JSON 형태의 응답 생성
-            return ResponseEntity.ok(Map.of("username", user.getUsername()));
-        } else {
-            // 유저가 없을 경우 null 반환
-            return ResponseEntity.ok(null);
-        }
-    }*/
+    }
 
     // 인증
     @ResponseBody
@@ -140,6 +104,25 @@ public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO) 
     public ResponseEntity<?> getUserDetails(@AuthenticationPrincipal UserDetails userDetails) {
         CommonResp<UserDetails> resp = CommonResp.success(userDetails);
         return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @PostMapping("/user-find-pw")
+    public  @ResponseBody Integer findPw(@RequestBody UserRequest.FindPwDTO findPwDTO) {
+        int result = userService.비번찾기(findPwDTO);
+        return result; // 0 실패, 1 이상은 성공
+    }
+
+    // 1. 비밀번호 변경 페이지 줘
+    @GetMapping("/change-pw-form/{id}")
+    public String changepwForm(@PathVariable("id") int id, Model model) {
+        model.addAttribute("id", id);
+        return "change-pw";
+    }
+
+    @PostMapping("/change-pw/{id}")
+    public String changepw(@PathVariable("id") int id, UserRequest.ChPwDTO pwDTO) {
+        userService.비번변경(id,pwDTO);
+        return "redirect:/";
     }
 
 }
