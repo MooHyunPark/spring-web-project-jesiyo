@@ -64,7 +64,6 @@ public class UserController {
     public String userInfo(@AuthenticationPrincipal User user ,Model model) {
         UserResponse.CreditDTO credits = userService.내정보보기(user.getId());
         model.addAttribute("model", credits);
-        System.out.println(model);
         return "user-info";
     }
 
@@ -92,7 +91,7 @@ public class UserController {
 
     // 아이디/비밀번호 찾기
     @GetMapping("/user-find-form")
-    public String findUser() {
+    public String findUser(UserRequest.FindUserDTO findUserDTO) {
         return "user-find";
     }
 

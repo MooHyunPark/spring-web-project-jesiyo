@@ -48,72 +48,14 @@
                           <h1 class="modal-title fs-5" id="exampleModalLabel">충전하기</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="input-group mb-3">
-                              <span class="input-group-text">연결된 계좌</span>
-                              <input type="tel" class="form-control"  value="{{model.account}}">
-                            </div>
-
-                            <div class="mb-3">
-                              <label for="recipient-name" class="col-form-label">충전금액</label>
-                              <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                          </form>
+                        <div>
+                            <button class="t1-btn">출금하기</button>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">충전하기</button>
-                          <a href="https://link.kakaopay.com/_/w4ItVkO"><img src="/image/kakao.png" id="kakao"></a>
-
-                        </div>
-                      </div>
                     </div>
-                  </div>
-
-                    <div>
-                      <button type="button" class="btn btn-primary t1-btn" data-bs-toggle="modal" data-bs-target="#modal2" data-bs-whatever="@mdo">출금하기</button>
-                    </div>
-
-                  <!--출금하기 모달-->
-                  <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">출금하기</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="mb-3">
-                              출금가능 금액 : {{model.hasPrice}}
-                            </div>
-                            <div class="input-group mb-3">
-                              <span class="input-group-text">연결된 계좌</span>
-                              <input type="tel" class="form-control"  value="{{model.account}}">
-                            </div>
-                            <div class="input-group mb-3">
-                              <span class="input-group-text">출금하실 계좌</span>
-                              <input type="tel" class="form-control"  >
-                            </div>
-                            <div class="mb-3">
-                              <label for="recipient-name" class="col-form-label">출금하실 금액</label>
-                              <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">충전하기</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
                 </div>
             </div>
         </div>
+
 
     </div>
 
