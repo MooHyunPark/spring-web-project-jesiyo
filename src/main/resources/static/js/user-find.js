@@ -27,6 +27,7 @@
             throw new Error(`${response.status} ${response.statusText}`);
         }
         let result = await response.json();
+        console.log(result);
         let findResult = document.querySelector("#find-result");
 
         if (result.result !== 'null') {
@@ -54,6 +55,7 @@
         }
         let result = await response.json();
 
+        console.log(result);
         if(result == 0){
             alert("일치하는 회원정보가 없습니다.")
         }

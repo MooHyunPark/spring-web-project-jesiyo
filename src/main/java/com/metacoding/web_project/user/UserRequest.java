@@ -10,8 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserRequest {
 
 
+
     @Data
-    public static class JoinDTO {
+    public static class JoinDTO{
+        private Integer id;
         @NotBlank
         private String username;
         @NotBlank
@@ -37,9 +39,9 @@ public class UserRequest {
         private String account;
         private User user;
 
-        public User toEntity(PasswordEncoder passwordEncoder) {
+        public User toEntity(PasswordEncoder passwordEncoder){
             String encpw = passwordEncoder.encode(password);
-            return User.builder()
+        return User.builder()
                     .id(null).username(username).password(encpw).name(name).tel(tel)
                     .postNum(postNum).addr(addr).addrDetail(addrDetail).birth(birth).role(role)
                     .build();
@@ -47,11 +49,11 @@ public class UserRequest {
 
         public UserAccount toEntity(User user) {
             return UserAccount.builder()
-                    .score(score)
-                    .hasPrice(hasPrice)
-                    .acount(account)
-                    .user(user)
-                    .build();
+                                .score(score)
+                                .hasPrice(hasPrice)
+                                .account(account)
+                                .user(user)
+                                .build();
 
         }
     }
@@ -71,19 +73,29 @@ public class UserRequest {
         private String addr;
         private String addrDetail;
         private String account;
-
-
     }
 
     @Data
     public static class ChangePwDTO {
-
+        private String password;
         private String newPassword;
     }
 
     @Data
-    public static class CheckIdDTO {
+    public static class CheckIdDTO{
         private String username;
+    }
+
+    @Data
+    public static class FindPwDTO{
+        private String username;
+        private String name;
+        private String tel;
+    }
+
+    @Data
+    public static class ChPwDTO{
+        private String password;
     }
 
 

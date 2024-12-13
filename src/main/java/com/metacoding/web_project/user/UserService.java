@@ -51,41 +51,48 @@ public class UserService implements UserDetailsService {
     // toEntity 만드는게 나을 듯... 나중에 수정
     @Transactional
     public void 유저정보수정하기(int id, UserRequest.UpdateDTO updateDTO) {
-        userRepository.update(id,updateDTO.getTel(),
+        userRepository.updateUser(id,updateDTO.getTel(),
                                  updateDTO.getPostNum(),
                                  updateDTO.getAddr(),
                                  updateDTO.getAddrDetail(),
                                  updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
         );
+        userRepository.updateUserAccount(id,updateDTO.getTel(),
+            updateDTO.getPostNum(),
+            updateDTO.getAddr(),
+            updateDTO.getAddrDetail(),
+            updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
+        );
     }
 
     @Transactional
     public void 비밀번호변경(int id, UserRequest.ChangePwDTO changePwDTO) {
+        String newPassword = passwordEncoder.encode(changePwDTO.getNewPassword());
 
-        String enNewPassword = passwordEncoder.encode(changePwDTO.getNewPassword());
-        Optional<User> user = userRepository.changePw(id);
-        if(user.isPresent()) {
-            user.get().updatePassword(enNewPassword);
-        } else {
-            throw new Exception404("해당하는 유저를 찾을 수 없습니다.");
+        User userPS = userRepository.findById(id); //repository에서 select해서 db에서 가져온 비번
+
+        boolean isSame = passwordEncoder.matches(changePwDTO.getPassword(), userPS.getPassword());
+
+        if(isSame){
+            userPS.changePassword(newPassword);
         }
-
-    }
+    } // 더티체킹
 
     @Transactional
     public UserResponse.CreditDTO 내정보보기(int id) {
          UserAccount userAccount = userRepository.findByIdUserInfo(id)
-                .orElseThrow(()-> new Exception404("정보를 불러오는데 실패했습니다."));
+                .orElseThrow(()-> new Exception404("0"));
 
          return new UserResponse.CreditDTO(userAccount);
     }
 
-
+    @Transactional
     public int 아이디중복확인(UserRequest.CheckIdDTO checkIdDTO) {
         return userRepository.checkId(checkIdDTO.getUsername());
     }
 
-    public String 유저찾기(UserRequest.FindUserDTO findUserDTO) {
+    @Transactional
+    public String 아이디찾기(UserRequest.FindUserDTO findUserDTO) {
         try {
             return userRepository.findUserId(findUserDTO.getTel(),findUserDTO.getName());
         } catch (RuntimeException e) {
@@ -93,6 +100,16 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional
+    public Integer 비번찾기(UserRequest.FindPwDTO findPwDTO) {
+        return userRepository.findPassword(findPwDTO.getTel(),findPwDTO.getName(),findPwDTO.getUsername());
+    }
+
+    @Transactional
+    public void 비번변경(int id, UserRequest.ChPwDTO pwDTO) {
+        String newPassword = passwordEncoder.encode(pwDTO.getPassword());
+        userRepository.changePassword(id,newPassword);
+    }
 }
 
 
