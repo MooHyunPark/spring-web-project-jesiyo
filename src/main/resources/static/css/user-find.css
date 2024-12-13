@@ -30,7 +30,7 @@ th{
     }
 
 }
-#find-btn {
+.find-btn {
     background-color: #f96506;
     border : none;
     width: 100%;

@@ -51,7 +51,7 @@ public class UserRequest {
             return UserAccount.builder()
                                 .score(score)
                                 .hasPrice(hasPrice)
-                                .acount(account)
+                                .account(account)
                                 .user(user)
                                 .build();
 
@@ -73,8 +73,6 @@ public class UserRequest {
         private String addr;
         private String addrDetail;
         private String account;
-
-
     }
 
     @Data
@@ -86,6 +84,18 @@ public class UserRequest {
     @Data
     public static class CheckIdDTO{
         private String username;
+    }
+
+    @Data
+    public static class FindPwDTO{
+        private String username;
+        private String name;
+        private String tel;
+    }
+
+    @Data
+    public static class ChPwDTO{
+        private String password;
     }
 
 

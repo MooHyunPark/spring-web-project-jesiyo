@@ -51,24 +51,33 @@ public class UserService implements UserDetailsService {
     // toEntity 만드는게 나을 듯... 나중에 수정
     @Transactional
     public void 유저정보수정하기(int id, UserRequest.UpdateDTO updateDTO) {
-        userRepository.update(id,updateDTO.getTel(),
+        userRepository.updateUser(id,updateDTO.getTel(),
                                  updateDTO.getPostNum(),
                                  updateDTO.getAddr(),
                                  updateDTO.getAddrDetail(),
                                  updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
         );
+        userRepository.updateUserAccount(id,updateDTO.getTel(),
+            updateDTO.getPostNum(),
+            updateDTO.getAddr(),
+            updateDTO.getAddrDetail(),
+            updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
+        );
+
     }
 
     @Transactional
     public void 비밀번호변경(int id, UserRequest.ChangePwDTO changePwDTO) {
+        String newPassword = passwordEncoder.encode(changePwDTO.getNewPassword());
 
-        String enPassword = passwordEncoder.encode(changePwDTO.getPassword());
-        String enNewPassword = passwordEncoder.encode(changePwDTO.getNewPassword());
+        User userPS = userRepository.findById(id); //repository에서 select해서 db에서 가져온 비번
 
-        userRepository.changePw(id, enPassword, enNewPassword);
-        System.out.println(enPassword);
-        System.out.println(enNewPassword);
-    }
+        boolean isSame = passwordEncoder.matches(changePwDTO.getPassword(), userPS.getPassword());
+
+        if(isSame){
+            userPS.changePassword(newPassword);
+        }
+    } // 더티체킹
 
     @Transactional
     public UserResponse.CreditDTO 내정보보기(int id) {
@@ -78,12 +87,13 @@ public class UserService implements UserDetailsService {
          return new UserResponse.CreditDTO(userAccount);
     }
 
-
+    @Transactional
     public int 아이디중복확인(UserRequest.CheckIdDTO checkIdDTO) {
         return userRepository.checkId(checkIdDTO.getUsername());
     }
 
-    public String 유저찾기(UserRequest.FindUserDTO findUserDTO) {
+    @Transactional
+    public String 아이디찾기(UserRequest.FindUserDTO findUserDTO) {
         try {
             return userRepository.findUserId(findUserDTO.getTel(),findUserDTO.getName());
         } catch (RuntimeException e) {
@@ -91,6 +101,16 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional
+    public Integer 비번찾기(UserRequest.FindPwDTO findPwDTO) {
+        return userRepository.findPassword(findPwDTO.getTel(),findPwDTO.getName(),findPwDTO.getUsername());
+    }
+
+    @Transactional
+    public void 비번변경(int id, UserRequest.ChPwDTO pwDTO) {
+        String newPassword = passwordEncoder.encode(pwDTO.getPassword());
+        userRepository.changePassword(id,newPassword);
+    }
 }
 
 

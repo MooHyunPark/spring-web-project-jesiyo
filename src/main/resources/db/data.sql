@@ -14,7 +14,6 @@ insert into useraccount_tb(user_id, score, has_price) values (5, 0, 3000);
 
 
 
-
 -- category_tb 더미데이터
 insert into category_tb(name, img_url) values ('카테고리1', '/upload/category1.png');
 insert into category_tb(name, img_url) values ('카테고리2', '/upload/category2.png');

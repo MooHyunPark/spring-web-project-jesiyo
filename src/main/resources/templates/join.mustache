@@ -24,7 +24,7 @@
             </h1>
             
             <div>
-                <form class="t1-join-form" action="/join" method="post">
+                <form class="t1-join-form" action="/join" method="post" onsubmit="return onSubmitCheck()">
                     <h1>회원가입</h1><br>
 
                     <div class="input-group mb-3">
@@ -34,11 +34,12 @@
                     <lable for="id" id="idck"></lable>
 
                     <div class="input-group mb-3">
-                        <input type="password" name="password" id="pw1" class="form-control" value="1234" placeholder="사용하실 비밀번호를 입력하세요">
+                        <input type="password" name="password" id="pw1" class="form-control" value="zzzz1234!" placeholder="사용하실 비밀번호를 입력하세요">
                     </div>
+                    <label for="pw1" id="pwvalid"></label>
 
                     <div class="input-group mb-3">
-                        <input type="password" name="" id="pw2" class="form-control" value="1234" placeholder="비밀번호를 한 번 더 입력해주세요.">
+                        <input type="password" name="" id="pw2" class="form-control" value="zzzz1234!" placeholder="비밀번호를 한 번 더 입력해주세요.">
                     </div>
                     <label for="pw2" id="pwck"></label>
 
