@@ -24,6 +24,18 @@ insert into category_tb(name, img_url) values ('유아도서', '/upload/category
 insert into category_tb(name, img_url) values ('여성의류', '/upload/category7.png');
 insert into category_tb(name, img_url) values ('남성패션', '/upload/category8.png');
 
+insert into category_tb(name, img_url) values ('반려동물 용품', '없습니다.');
+insert into category_tb(name, img_url) values ('디지털기기', '없습니다.');
+insert into category_tb(name, img_url) values ('생활가전', '없습니다.');
+insert into category_tb(name, img_url) values ('가구/인테리어', '없습니다.');
+insert into category_tb(name, img_url) values ('생활/주방', '없습니다.');
+insert into category_tb(name, img_url) values ('가구', '/upload/category1.png');
+insert into category_tb(name, img_url) values ('디지털기기2', '/upload/category2.png');
+insert into category_tb(name, img_url) values ('생활가전2', '/upload/category3.png');
+
+insert into category_tb(name, img_url) values ('카테고리4', '/upload/category1.png');
+insert into category_tb(name, img_url) values ('카테고리5', '/upload/category2.png');
+insert into category_tb(name, img_url) values ('카테고리6', '/upload/category3.png');
 
 -- goods_tb 더미데이터
 insert into goods_tb(title, category_id, seller_id, content, img_url, starting_price, created_at, end_at, status) values ('강아지 산책줄 나눔합니다.', '4', '4', '강아지 산책줄 나눔 중입니다.', '없습니다.', 1000, '2024-12-10 12:20:00','2024-12-13 16:15:00', 0);
