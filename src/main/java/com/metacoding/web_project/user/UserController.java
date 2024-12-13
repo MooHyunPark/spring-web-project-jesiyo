@@ -12,10 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -59,6 +60,7 @@ public class UserController {
     public String userInfo(@AuthenticationPrincipal User user ,Model model) {
         UserResponse.CreditDTO credits = userService.내정보보기(user.getId());
         model.addAttribute("model", credits);
+        System.out.println(model);
         return "user-info";
     }
 
@@ -86,7 +88,7 @@ public class UserController {
 
     // 아이디/비밀번호 찾기
     @GetMapping("/user-find-form")
-    public String findUser(UserRequest.FindUserDTO findUserDTO) {
+    public String findUser() {
         return "user-find";
     }
 
