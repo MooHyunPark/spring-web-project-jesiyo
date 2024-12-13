@@ -59,6 +59,7 @@ public class UserController {
     public String userInfo(@AuthenticationPrincipal User user ,Model model) {
         UserResponse.CreditDTO credits = userService.내정보보기(user.getId());
         model.addAttribute("model", credits);
+        System.out.println(model);
         return "user-info";
     }
 
