@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+
 import java.util.Map;
+
 
 @RequiredArgsConstructor
 @Controller
@@ -96,6 +99,7 @@ public class UserController {
 
     }
 
+
     // 인증
     @ResponseBody
     @GetMapping("/api/v1/authentication")
@@ -112,7 +116,7 @@ public class UserController {
 
     // 1. 비밀번호 변경 페이지 줘
     @GetMapping("/change-pw-form/{id}")
-    public String changepwForm(@PathVariable("id") int id, Model model) {
+    public String changepwForm(@PathVariable("id") String id, Model model) {
         model.addAttribute("id", id);
         return "change-pw";
     }
@@ -121,6 +125,7 @@ public class UserController {
     public String changepw(@PathVariable("id") int id, UserRequest.ChPwDTO pwDTO) {
         userService.비번변경(id,pwDTO);
         return "redirect:/";
+
     }
 
 }
