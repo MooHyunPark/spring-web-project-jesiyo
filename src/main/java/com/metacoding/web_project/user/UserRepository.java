@@ -3,6 +3,7 @@ package com.metacoding.web_project.user;
 import com.metacoding.web_project._core.error.ex.Exception401;
 import com.metacoding.web_project._core.error.ex.Exception404;
 import com.metacoding.web_project.useraccount.UserAccount;
+import com.metacoding.web_project.useraccount.UserAccountRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRepository {
     private final EntityManager em;
+    private final UserAccountRepository userAccountRepository;
 
     public User findById(int id) {
         Query q = em.createQuery("select u from User u where u.id = :id", User.class);
@@ -53,7 +55,6 @@ public class UserRepository {
         Query q = em.createQuery("select count(u) from User u where u.username = :username");
         q.setParameter("username", username);
         Long count = (Long) q.getSingleResult();
-        System.out.println(count);
         return count.intValue();
     }
 
@@ -64,7 +65,7 @@ public class UserRepository {
         return (UserAccount) q.getSingleResult();
     }
 
-    public void updateUser(int id, String tel, String postNum, String addr, String addrDetail, String account) {
+    public void updateUser(int id, String tel, String postNum, String addr, String addrDetail) {
         String sql = """
                 update User u
                 set u.tel = :tel,
@@ -83,7 +84,7 @@ public class UserRepository {
         q.executeUpdate();
     }
 
-    public void updateUserAccount(int id, String tel, String postNum, String addr, String addrDetail, String account) {
+    public void updateUserAccount(int id,String account) {
         String Sql2 = """
             update UserAccount u
             set u.account = :account
@@ -139,7 +140,7 @@ public class UserRepository {
         }
     }
 
-    //비밀번호 변경하기
+
     public void changePassword(int id, String Password) {
         Query q = em.createQuery("update User u set u.password = :newPassword where u.id = :id");
         q.setParameter("id", id);
@@ -153,5 +154,17 @@ public class UserRepository {
         q.setParameter("id", id);
         q.setParameter("leftMoney", leftMoney);
         q.executeUpdate();
+        em.flush();
     }
+
+
+    public void charge(Integer id, Integer afterMoney) {
+        Query q = em.createQuery("update UserAccount ua set ua.hasPrice = :afterMoney where ua.id = :id");
+        q.setParameter("id", id);
+        q.setParameter("afterMoney", afterMoney);
+        q.executeUpdate();
+        em.flush();
+    }
+
 }
+

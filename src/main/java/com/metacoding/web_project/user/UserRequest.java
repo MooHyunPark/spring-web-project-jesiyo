@@ -109,7 +109,12 @@ public class UserRequest {
     public static class WithdrawDTO{
         private Integer hasPrice;
         private Integer outMoney;
+        private String outAccount;
     }
 
-
+    @Data
+    public static class ChargeDTO{
+        private Integer hasPrice;
+        private Integer inMoney;
+    }
 }
