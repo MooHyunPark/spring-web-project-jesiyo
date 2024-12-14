@@ -61,7 +61,7 @@
         }
         if(result !== 0){
             alert("비밀번호 변경페이지로 이동합니다.")
-            location.href=`/change-pw-form/${result}`;
+            location.href=`/change-pw-form`;
         }
     }
 

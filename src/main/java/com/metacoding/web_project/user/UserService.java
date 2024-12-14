@@ -56,7 +56,7 @@ public class UserService implements UserDetailsService {
                                  updateDTO.getAddrDetail()
         );
         userRepository.updateUserAccount(id,
-            updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
+            updateUserAccountDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
         );
     }
 
@@ -105,6 +105,12 @@ public class UserService implements UserDetailsService {
         String newPassword = passwordEncoder.encode(pwDTO.getPassword());
         userRepository.changePassword(id,newPassword);
     }
+
+    public void 출금하기(int id, UserRequest.WithdrawDTO withdrawDTO) {
+        Integer leftMoney = (Integer) withdrawDTO.getHasPrice() - withdrawDTO.getOutMoney();
+        userRepository.withdraw(id, leftMoney);
+    }
+
 }
 
 

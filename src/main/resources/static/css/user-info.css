@@ -23,7 +23,7 @@
     justify-content: space-between;
 }
 
-.t1-btn-container button {
+.t1-btn-container button:not(.btn-close) {
     width: 250px;
     height: 40px;
     border-color: #f96506;
@@ -40,5 +40,10 @@
 
 }
 
-
+.modal{
+    button:not(.btn-close){
+        background-color: #f96506;
+        width:100%;
+    }
+}
 
