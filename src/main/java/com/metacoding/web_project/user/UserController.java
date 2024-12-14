@@ -12,10 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -55,50 +55,84 @@ public class UserController {
 
 
     // /s/붙이기  신용점수 보이는 개인정보 페이지
-    @GetMapping("/user-info/{id}")
-    public String userInfo(@PathVariable("id") int id ,Model model) {
-        UserResponse.CreditDTO credits = userService.내정보보기(id);
+    @GetMapping("/s/user-info/")
+    public String userInfo(@AuthenticationPrincipal User user ,Model model) {
+        UserResponse.CreditDTO credits = userService.내정보보기(user.getId());
         model.addAttribute("model", credits);
-        System.out.println(model);
         return "user-info";
     }
 
     // /s/붙이기 개인정보 수정페이지
-    @GetMapping("/user-info/{id}/change-form")
-    public String userInfoChangeForm(@PathVariable("id") int id, Model model) {
-        UserResponse.InfoDTO infoDTO = userService.유저정보보기(id);
+    @GetMapping("/s/user-info/change-form")
+    public String userInfoChangeForm(@AuthenticationPrincipal User user, Model model) {
+        UserResponse.InfoDTO infoDTO = userService.유저정보보기(user.getId());
         model.addAttribute("info", infoDTO);
         return "user-info-change";
     }
 
     // 개인정보 수정 + 계좌등록하기
-    @PostMapping("/user-info/{id}/change")
-    public String userInfoChange(@PathVariable("id") int id,UserRequest.UpdateDTO updateDTO) {
-        userService.유저정보수정하기(id,updateDTO);
-        return "redirect:/user-info/{id}";
+    @PostMapping("/s/user-info/change")
+    public String userInfoChange(@AuthenticationPrincipal User user,UserRequest.UpdateDTO updateDTO) {
+        userService.유저정보수정하기(user.getId() ,updateDTO);
+        return "redirect:/s/user-info/change-form";
     }
 
 
-    @PostMapping("/user-info/{id}/pw-change")
-    public String pwChange(@PathVariable("id") int id, UserRequest.ChangePwDTO changePwDTO) {
-        userService.비밀번호변경(id,changePwDTO);
-        return "redirect:/user-info/{id}";
+    @PostMapping("/s/user-info/pw-change")
+    public String pwChange(@AuthenticationPrincipal User user, UserRequest.ChangePwDTO changePwDTO) {
+        userService.비밀번호변경(user.getId(),changePwDTO);
+        return "redirect:/s/user-info/change-form";
     }
 
-    // 아이디/비밀번호 찾기 form
+    // 아이디/비밀번호 찾기
     @GetMapping("/user-find-form")
-    public String findUser() {
+    public String findUser(UserRequest.FindUserDTO findUserDTO) {
         return "user-find";
     }
 
-    @PostMapping("/user-find-id")
-    @ResponseBody
-    public ResponseEntity<?> findId(@RequestBody UserRequest.FindUserDTO findUserDTO) {
-        String result = String.valueOf(userService.아이디찾기(findUserDTO));
-        return ResponseEntity.ok(Map.of("result", result));
-
+/*    @PostMapping("/user-find")
+    public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO, Model model) {
+        String result = String.valueOf(userService.유저찾기(findUserDTO));
+        System.out.println(result);
+        return result;
+    }*/
+@PostMapping("/user-find")
+@ResponseBody
+public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO) {
+    try {
+        // userService를 통해 유저를 Optional로 반환
+        String result = String.valueOf(userService.유저찾기(findUserDTO));
+        // Optional 검사 후 유저 정보 반환
+        if (result != null) {
+            // Map으로 JSON 형태의 응답 생성
+            return ResponseEntity.ok(Map.of("username", result));
+        } else {
+            // 유저가 없을 경우 에러 메시지와 함께 404 상태 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+        }
+    } catch (Exception e) {
+        // 예외 발생 시 500 상태와 에러 메시지 반환
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal server error", "message", e.getMessage()));
     }
+}
 
+
+/*    @PostMapping("/user-find")
+    @ResponseBody
+    public ResponseEntity<?> find(@RequestBody UserRequest.FindUserDTO findUserDTO) {
+        // userService를 통해 유저를 Optional로 반환
+        Optional<User> result = userService.유저찾기(findUserDTO.getTel(), findUserDTO.getName());
+
+        // Optional 검사 후 유저 정보 반환
+        if (result.isPresent()) {
+            User user = result.get();
+            // Map으로 JSON 형태의 응답 생성
+            return ResponseEntity.ok(Map.of("username", user.getUsername()));
+        } else {
+            // 유저가 없을 경우 null 반환
+            return ResponseEntity.ok(null);
+        }
+    }*/
 
     // 인증
     @ResponseBody
@@ -106,26 +140,6 @@ public class UserController {
     public ResponseEntity<?> getUserDetails(@AuthenticationPrincipal UserDetails userDetails) {
         CommonResp<UserDetails> resp = CommonResp.success(userDetails);
         return new ResponseEntity<>(resp, HttpStatus.OK);
-    }
-
-    @PostMapping("/user-find-pw")
-    public  @ResponseBody Integer findPw(@RequestBody UserRequest.FindPwDTO findPwDTO) {
-        int result = userService.비번찾기(findPwDTO);
-        return result; // 0 실패, 1 이상은 성공
-    }
-
-    // 1. 비밀번호 변경 페이지 줘
-    @GetMapping("/change-pw-form/{id}")
-    public String changepwForm(@PathVariable("id") String id, Model model) {
-        model.addAttribute("id", id);
-        return "change-pw";
-    }
-
-    @PostMapping("/change-pw/{id}")
-    public String changepw(@PathVariable("id") int id, UserRequest.ChPwDTO pwDTO) {
-        userService.비번변경(id,pwDTO);
-        return "redirect:/";
-
     }
 
 }
