@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 @RequiredArgsConstructor
 @Controller
 public class UserController {
@@ -62,6 +63,7 @@ public class UserController {
     public String userInfo(@AuthenticationPrincipal User user ,Model model) {
         UserResponse.CreditDTO credits = userService.내정보보기(user.getId());
         model.addAttribute("model", credits);
+        System.out.println(model);
         return "user-info";
     }
 
