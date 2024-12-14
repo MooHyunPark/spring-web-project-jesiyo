@@ -16,12 +16,12 @@ img {
 }
 
 .t1-btn-container {
-    display: flex;
-    margin-top: 20px;
+    display: flex; 
+    margin-top: 20px; 
     justify-content: space-between;
 }
 
-.t1-btn-container button:not(.btn-close) {
+.t1-btn-container button {
     width: 250px;
     height: 40px;
     border-color: #f96506;
