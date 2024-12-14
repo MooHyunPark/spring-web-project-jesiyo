@@ -106,11 +106,30 @@ public class UserService implements UserDetailsService {
         userRepository.changePassword(id,newPassword);
     }
 
+    @Transactional
     public void 출금하기(int id, UserRequest.WithdrawDTO withdrawDTO) {
-        Integer leftMoney = (Integer) withdrawDTO.getHasPrice() - withdrawDTO.getOutMoney();
-        userRepository.withdraw(id, leftMoney);
-    }
+        Integer hasMoney = (Integer) withdrawDTO.getHasPrice();
+        Integer outMoney = (Integer) withdrawDTO.getOutMoney();
+        try {
+            if(hasMoney < outMoney){
+                throw new Exception404("잔액이 부족합니다. 현재 잔액: " + hasMoney + ", 출금 요청 금액: " + outMoney);
+            }
+            Integer leftMoney = hasMoney - outMoney;
+            userRepository.withdraw(id, leftMoney);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
 
+    }
+    
+    @Transactional
+    public void 충전하기(Integer id, UserRequest.ChargeDTO chargeDTO) {
+        Integer hasPrice = (Integer) chargeDTO.getHasPrice();
+        Integer inMoney = (Integer) chargeDTO.getInMoney();
+
+        Integer afterMoney = hasPrice + inMoney;
+        userRepository.charge(id,afterMoney);
+    }
 }
 
 

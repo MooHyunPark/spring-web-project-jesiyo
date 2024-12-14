@@ -137,11 +137,20 @@ public class UserController {
 
     }
 
-    @PostMapping("/user-info/withdraw")
+    @PostMapping("/user-info/withdrawal")
     public String withdraw(UserRequest.WithdrawDTO withdrawDTO){
         User user = (User) session.getAttribute("sessionUser");
         int id = user.getId();
         userService.출금하기(id,withdrawDTO);
+        System.out.println("송금해야할 계좌 : "+withdrawDTO.getOutAccount());
+        return "redirect:/user-info";
+    }
+
+    @PostMapping("/user-info/charging")
+    public String charge(UserRequest.ChargeDTO chargeDTO){
+        User user = (User) session.getAttribute("sessionUser");
+        Integer id = user.getId();
+        userService.충전하기(id,chargeDTO);
         return "redirect:/user-info";
     }
 

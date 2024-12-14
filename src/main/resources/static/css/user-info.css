@@ -18,15 +18,16 @@
 }
 
 .t1-btn-container {
-    display: flex; 
-    margin-top: 20px; 
-    justify-content: space-between;
+    display: flex;
+    /*margin-top: 7%;*/
+    justify-content: center;
 }
 
 .t1-btn-container button:not(.btn-close) {
-    width: 250px;
+    width: 50%;
     height: 40px;
     border-color: #f96506;
+    margin : 10% 5% 0 5%;
 }
 
 .t1-no-border { 
@@ -44,6 +45,14 @@
     button:not(.btn-close){
         background-color: #f96506;
         width:100%;
+        margin : 10%;
     }
 }
 
+#modal-btn:not(.col-form-label){
+    text-align: center;
+    width: 80%;
+}
+#btn-con:not(.col-form-label){
+    justify-content: center;
+}
