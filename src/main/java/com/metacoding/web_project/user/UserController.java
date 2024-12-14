@@ -57,9 +57,9 @@ public class UserController {
     // /s/붙이기  신용점수 보이는 개인정보 페이지
     @GetMapping("/s/user-info/")
     public String userInfo(@AuthenticationPrincipal User user ,Model model) {
-        UserResponse.CreditDTO credits = userService.내정보보기(user.getId());
+        int id = user.getId();
+        UserResponse.CreditDTO credits = userService.내정보보기(id);
         model.addAttribute("model", credits);
-        System.out.println(model);
         return "user-info";
     }
 
@@ -73,8 +73,9 @@ public class UserController {
 
     // 개인정보 수정 + 계좌등록하기
     @PostMapping("/s/user-info/change")
-    public String userInfoChange(@AuthenticationPrincipal User user,UserRequest.UpdateDTO updateDTO) {
-        userService.유저정보수정하기(user.getId() ,updateDTO);
+    public String userInfoChange(@AuthenticationPrincipal User user,UserRequest.UpdateDTO updateDTO,UserRequest.UpdateUserAccountDTO updateUserAccountDTO) {
+      int id = user.getId();
+      userService.유저정보수정하기(id,updateDTO,updateUserAccountDTO);
         return "redirect:/s/user-info/change-form";
     }
 
@@ -110,20 +111,33 @@ public class UserController {
     @PostMapping("/user-find-pw")
     public  @ResponseBody Integer findPw(@RequestBody UserRequest.FindPwDTO findPwDTO) {
         int result = userService.비번찾기(findPwDTO);
+        if (result > 0) { // 비밀번호 찾기 성공
+            session.setAttribute("id", result); // 사용자 이름을 세션에 저장
+        }
         return result; // 0 실패, 1 이상은 성공
     }
 
     // 1. 비밀번호 변경 페이지 줘
-    @GetMapping("/change-pw-form/{id}")
-    public String changepwForm(@PathVariable("id") int id, Model model) {
-        model.addAttribute("id", id);
+    @GetMapping("/change-pw-form")
+    public String changepwForm(Model model) {
+
         return "change-pw";
     }
 
-    @PostMapping("/change-pw/{id}")
-    public String changepw(@PathVariable("id") int id, UserRequest.ChPwDTO pwDTO) {
+    @PostMapping("/change-pw")
+    public String changepw(UserRequest.ChPwDTO pwDTO) {
+        int id = (int) session.getAttribute("id");
         userService.비번변경(id,pwDTO);
         return "redirect:/";
+
+    }
+
+    @PostMapping("/user-info/withdraw")
+    public String withdraw(UserRequest.WithdrawDTO withdrawDTO){
+        User user = (User) session.getAttribute("sessionUser");
+        int id = user.getId();
+        userService.출금하기(id,withdrawDTO);
+        return "redirect:/user-info";
     }
 
 }

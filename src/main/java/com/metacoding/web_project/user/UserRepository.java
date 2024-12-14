@@ -64,7 +64,7 @@ public class UserRepository {
         return (UserAccount) q.getSingleResult();
     }
 
-    public void updateUser(int id, String tel, String postNum, String addr, String addrDetail) {
+    public void updateUser(int id, String tel, String postNum, String addr, String addrDetail, String account) {
         String sql = """
                 update User u
                 set u.tel = :tel,
@@ -83,7 +83,7 @@ public class UserRepository {
         q.executeUpdate();
     }
 
-    public void updateUserAccount(int id, String account) {
+    public void updateUserAccount(int id, String tel, String postNum, String addr, String addrDetail, String account) {
         String Sql2 = """
             update UserAccount u
             set u.account = :account
@@ -142,15 +142,16 @@ public class UserRepository {
     //비밀번호 변경하기
     public void changePassword(int id, String Password) {
         Query q = em.createQuery("update User u set u.password = :newPassword where u.id = :id");
-        q.setParameter("id",id);
-        q.setParameter("newPassword",Password);
+        q.setParameter("id", id);
+        q.setParameter("newPassword", Password);
         q.executeUpdate();
     }
 
 
-    public User findById(Integer id){
-        Query q = em.createQuery("select u from User u where u.id = :id", User.class);
+    public void withdraw(int id, Integer leftMoney){
+        Query q = em.createQuery("update UserAccount u set u.hasPrice = :leftMoney where u.id = :id");
         q.setParameter("id", id);
-        return (User) q.getSingleResult();
+        q.setParameter("leftMoney", leftMoney);
+        q.executeUpdate();
     }
 }

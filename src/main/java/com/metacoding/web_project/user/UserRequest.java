@@ -78,6 +78,11 @@ public class UserRequest {
     }
 
     @Data
+    public static class UpdateUserAccountDTO{
+        private String account;
+    }
+
+    @Data
     public static class ChangePwDTO {
         private String password;
         private String newPassword;
@@ -98,6 +103,12 @@ public class UserRequest {
     @Data
     public static class ChPwDTO{
         private String password;
+    }
+
+    @Data
+    public static class WithdrawDTO{
+        private Integer hasPrice;
+        private Integer outMoney;
     }
 
 

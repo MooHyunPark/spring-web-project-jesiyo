@@ -39,7 +39,7 @@
                       <button type="button" class="btn btn-primary t1-btn" data-bs-toggle="modal" data-bs-target="#modal1" data-bs-whatever="@mdo">충전하기</button>
                     </div
                   <!--충전하기 모달-->
-                  <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="t1-user modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -50,7 +50,7 @@
                           <form>
                             <div class="input-group mb-3">
                               <span class="input-group-text">연결된 계좌</span>
-                              <input type="tel" class="form-control"  value="{{model.account}}">
+                              <input type="tel" class="form-control"   value="{{model.account}}" readonly>
                             </div>
 
                             <div class="mb-3">
@@ -60,9 +60,9 @@
                           </form>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                           <button type="button" class="btn btn-primary">충전하기</button>
                           <a href="https://link.kakaopay.com/_/w4ItVkO"><img src="/image/kakao.png" id="kakao"></a>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
                         </div>
                       </div>
@@ -74,7 +74,7 @@
                     </div>
 
                   <!--출금하기 모달-->
-                  <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="t1-user modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -88,7 +88,7 @@
                             </div>
                             <div class="input-group mb-3">
                               <span class="input-group-text">연결된 계좌</span>
-                              <input type="tel" class="form-control"  value="{{model.account}}">
+                              <input type="tel" class="form-control"  value="{{model.account}}" readonly>
                             </div>
                             <div class="input-group mb-3">
                               <span class="input-group-text">출금하실 계좌</span>
@@ -101,8 +101,8 @@
                           </form>
                         </div>
                         <div class="modal-footer">
+                          <button type="button" class="btn btn-primary">출금하기</button>
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">충전하기</button>
                         </div>
                       </div>
                     </div>
