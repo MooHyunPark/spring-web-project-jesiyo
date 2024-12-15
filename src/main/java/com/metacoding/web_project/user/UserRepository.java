@@ -102,12 +102,11 @@ public class UserRepository {
                     """;
         Query q = em.createQuery(sql);
         q.setParameter("id", id);
-            try{
-                UserAccount userAccount = (UserAccount) q.getSingleResult();
-                return Optional.ofNullable(userAccount);
-            }catch (RuntimeException e){
-                return Optional.empty();
-            }
+
+        UserAccount userAccount = (UserAccount) q.getSingleResult();
+        em.refresh(userAccount);
+        return Optional.ofNullable(userAccount);
+
     }
 
     public String  findUserId(String tel, String name){

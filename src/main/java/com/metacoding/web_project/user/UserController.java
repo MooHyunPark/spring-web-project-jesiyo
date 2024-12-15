@@ -10,6 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -86,7 +91,6 @@ public class UserController {
         return "redirect:/s/user-info/change-form";
     }
 
-    // 아이디/비밀번호 찾기 form
     @GetMapping("/user-find-form")
     public String findUser() {
         return "user-find";
@@ -97,9 +101,7 @@ public class UserController {
     public ResponseEntity<?> findId(@RequestBody UserRequest.FindUserDTO findUserDTO) {
         String result = String.valueOf(userService.아이디찾기(findUserDTO));
         return ResponseEntity.ok(Map.of("result", result));
-
     }
-
 
     // 인증
     @ResponseBody
@@ -118,10 +120,8 @@ public class UserController {
         return result; // 0 실패, 1 이상은 성공
     }
 
-    // 1. 비밀번호 변경 페이지 줘
     @GetMapping("/change-pw-form")
     public String changepwForm(Model model) {
-
         return "change-pw";
     }
 
@@ -130,7 +130,6 @@ public class UserController {
         int id = (int) session.getAttribute("id");
         userService.비번변경(id,pwDTO);
         return "redirect:/";
-
     }
 
     @PostMapping("/user-info/withdrawal")
