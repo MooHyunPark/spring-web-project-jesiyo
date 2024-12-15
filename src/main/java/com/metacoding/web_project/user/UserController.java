@@ -15,12 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -136,13 +131,13 @@ public class UserController {
     public String withdraw(@AuthenticationPrincipal User user, UserRequest.WithdrawDTO withdrawDTO){
         userService.출금하기(user.getId(),withdrawDTO);
         System.out.println("송금해야할 계좌 : "+withdrawDTO.getOutAccount());
-        return "redirect:/user-info";
+        return "redirect:/s/user-info/";
     }
 
     @PostMapping("/s/user-info/charging")
     public String charge(@AuthenticationPrincipal User user,UserRequest.ChargeDTO chargeDTO){
         userService.충전하기(user.getId(),chargeDTO);
-        return "redirect:/user-info";
+        return "redirect:/s/user-info/";
     }
 
 }

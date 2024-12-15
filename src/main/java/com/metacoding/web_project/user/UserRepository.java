@@ -1,6 +1,5 @@
 package com.metacoding.web_project.user;
 
-import com.metacoding.web_project._core.error.ex.Exception401;
 import com.metacoding.web_project._core.error.ex.Exception404;
 import com.metacoding.web_project.useraccount.UserAccount;
 import com.metacoding.web_project.useraccount.UserAccountRepository;
@@ -8,9 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
