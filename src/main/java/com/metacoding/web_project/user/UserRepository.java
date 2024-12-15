@@ -1,6 +1,5 @@
 package com.metacoding.web_project.user;
 
-import com.metacoding.web_project._core.error.ex.Exception401;
 import com.metacoding.web_project._core.error.ex.Exception404;
 import com.metacoding.web_project.useraccount.UserAccount;
 import com.metacoding.web_project.useraccount.UserAccountRepository;
@@ -8,9 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -110,12 +107,12 @@ public class UserRepository {
 
     public String  findUserId(String tel, String name){
         try {
-        String sql = """
+            String sql = """
             select u.username from User u where u.name = :name and u.tel = :tel
             """;
-        Query q = em.createQuery(sql, String.class);
-        q.setParameter("name", name);
-        q.setParameter("tel", tel);
+            Query q = em.createQuery(sql, String.class);
+            q.setParameter("name", name);
+            q.setParameter("tel", tel);
             return (String) q.getSingleResult();
         } catch (NoResultException e) {
             return null;
