@@ -50,14 +50,12 @@
                                 {{/transactionStatus}}
                             </div>
                             <div class="btn-group mt-1">
-                                {{^transactionStatus}}
                                 <button type="button" class="btn btn-custom btn-sm"
                                         onclick="addNumber({{id}})"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deliveryNumberModal">
                                     송장번호등록
                                 </button>
-                                {{/transactionStatus}}
                                 {{^sellerStatus}} <!-- sellerStatus = false일때만 판매 확정 버튼이 보이도록 -->
                                     <button type="button" class="btn btn-custom btn-sm" onclick="confirmSale({{id}})">판매 확정</button>
                                 {{/sellerStatus}}
@@ -83,7 +81,7 @@
                 <h5 class="modal-title" id="deliveryNumberModalLabel">송장번호등록</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/s/deliveryNumber/update" method="post">
+            <form action="/deliverynumber/update" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="deliveryNumber" class="form-label">송장번호</label>
@@ -94,8 +92,8 @@
                     <input type="hidden" id="hiddenId" name="transactionId">
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">등록</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary">등록</button>
                 </div>
             </form>
         </div>
@@ -106,7 +104,6 @@
     function changePage(pageNumber) {
         window.location.href = `/s/mypage-complete-auction?page=${pageNumber}`;
     }
-
     // 송장번호등록을 위한 모달창에 해당 물품의 transactionId값 넣기
     function addNumber(transactionId){
         document.getElementById('hiddenId').value = transactionId;
@@ -115,7 +112,7 @@
     // 판매 확정하기
     function confirmSale(transactionId) {
         if (confirm('판매를 확정하시겠습니까?')) {
-            fetch('/s/sellerStatus/update', {
+            fetch('/sellerstatus/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +135,7 @@
     // 판매 취소하기
     function cancelSale(transactionId) {
         if (confirm('판매를 취소하시겠습니까?')) {
-            fetch('/s/transactionStatusForSeller/update', {
+            fetch('/transactionstatusforseller/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -2,11 +2,8 @@ package com.metacoding.web_project.goods;
 
 import com.metacoding.web_project._core.CommonResp;
 import com.metacoding.web_project.bid.BidResponse;
-import com.metacoding.web_project.category.CategoryResponse;
 import com.metacoding.web_project.category.CategoryService;
-import com.metacoding.web_project.user.User;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,18 +40,15 @@ public class GoodsController {
 
     // 제품 등록 화면 열기
     @GetMapping("/s/myPage-goods-register")
-    public String register(@AuthenticationPrincipal User user, Model model) {
-        List<CategoryResponse.CategoryDTO> allCategory = categoryService.findAllCategory(null);
-        model.addAttribute("model", allCategory);
-        model.addAttribute("sellerId", user.getId());
+    public String register() {
         return "goods-register";
     }
 
     // 제품 등록
-    @PostMapping("/s/goods/save")
-    public String goodsSave(@Valid GoodsRequest.GoodsSaveDTO goodsSaveDTO, Errors errors) {
+    @PostMapping("/goods/save")
+    public String goodsSave(GoodsRequest.GoodsSaveDTO goodsSaveDTO) {
         goodsService.goodsSave(goodsSaveDTO);
-        return "redirect:/s/myPage-being-auctioned"; // 경매중인물품 리스트 화면으로 리다이렉트
+        return "redirect:/mypage-being-auctioned"; // 경매중인물품 리스트 화면으로 리다이렉트
     }
 
     // 경매시간 종료 상품 상태 변경
@@ -70,17 +63,16 @@ public class GoodsController {
     }
 
     @GetMapping("/goods-list")
-    public String goodsList(@RequestParam("select") String select,@RequestParam(defaultValue = "") String keyword, Model model) {
-        model.addAttribute("category", categoryService.findAllCategory(null));
+    public String goodsList(@RequestParam("select") String select,@RequestParam("keyword") String keyword, Model model) {
+        model.addAttribute("category", categoryService.findAllCategory());
         model.addAttribute("goods", goodsService.searchGoodsList(GoodsRequest.SeacherGoodsDTO.builder().select(select).keyword(keyword).page(1).line(15).build()));
-        model.addAttribute("keyword", new GoodsResponse.KeyWordDTO(keyword));
         return "goods-list";
     }
 
     @GetMapping("/goods-list/{id}")
-    public String goodsList(@PathVariable("id") Integer categoryId, Model model) {
-        model.addAttribute("category", categoryService.findAllCategory(categoryId));
-        model.addAttribute("goods",goodsService.getGoodsList(categoryId,1,15));
+    public String goodsList(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("category", categoryService.findAllCategory());
+        model.addAttribute("goods",goodsService.getGoodsList(id,1,15));
         return "goods-list";
     }
 
@@ -101,9 +93,11 @@ public class GoodsController {
     }
 
     // 경매 중인 물품(판매) 화면 열기
-    @GetMapping("/s/myPage-being-auctioned")
+    @GetMapping("/mypage-being-auctioned")
     public String beingAuctioned(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("models", goodsService.mySellGoods(userDetails.getUsername()));
         return "being-auctioned";
     }
+
+
 }
