@@ -40,24 +40,24 @@ public class TransactionController {
     }
 
     // 낙찰된 물품(판매) 송장 번호 등록 -> transaction_tb 테이블의 delivery_number update
-    @PostMapping("/deliverynumber/update")
+    @PostMapping("/s/deliveryNumber/update")
     public String deliveryNumUpdate(TransactionRequest.UpdateDeliveryNumberDTO updateDeliveryNumberDTO) {
         transactionService.updateDeliveryNumber(updateDeliveryNumberDTO);
-        return "redirect:/mypage-complete-auction";
+        return "redirect:/s/mypage-complete-auction";
     }
 
     // 낙찰된 물품(판매) 판매 확정하기 -> transaction_tb 테이블의 seller_status = 1로 update
-    @PostMapping("/sellerstatus/update")
+    @PostMapping("/s/sellerStatus/update")
     @ResponseBody
     public ResponseEntity<?> updateSellerStatus(@RequestBody TransactionRequest.UpdateSellerStatusDTO updateSellerStatusDTO) {
         transactionService.updateSellerStatus(updateSellerStatusDTO);
 
         CommonResp resp = new CommonResp(true, "판매 확정 되었습니다.", null);
-        return ResponseEntity.ok(resp);    
+        return ResponseEntity.ok(resp);
     }
 
     // 낙찰된 물품(판매) 판매 취소하기 -> transaction_tb 테이블의 transaction_status = 1로 update
-    @PostMapping("/transactionstatusforseller/update")
+    @PostMapping("/s/transactionStatusForSeller/update")
     @ResponseBody
     public ResponseEntity<?> updateTransactionStatusForSeller(@RequestBody TransactionRequest.UpdateTransactionStatusForSellerDTO updateTransactionStatusForSellerDTO) {
         transactionService.updateTransactionStatusForSeller(updateTransactionStatusForSellerDTO);
@@ -68,7 +68,7 @@ public class TransactionController {
 
     // 낙찰된 물품(구매) 화면 열기 - 구매 확정 누름, 안 누름 전부 포함
 
-    @GetMapping("/s/myPage-participated-auction")
+    @GetMapping("/s/mypage-participated-auction")
     public String participatedAuction(@AuthenticationPrincipal User user, Model model, @RequestParam(defaultValue = "") String page) {
         List<TransactionResponse.ParticipatedAuctionDTO> participatedAuctionList = transactionService.participatedAuctionList(user.getId(), page);
         int rowCount = transactionService.participatedAuctionListCount(user.getId());
@@ -78,7 +78,7 @@ public class TransactionController {
     }
 
     // 낙찰된 물품(구매) 구매 확정하기 -> transaction_tb 테이블의 buyer_status = 1로 update
-    @PostMapping("/buyerstatus/update")
+    @PostMapping("/s/buyerStatus/update")
     @ResponseBody
     public ResponseEntity<?> updateBuyerStatus(@RequestBody TransactionRequest.UpdateBuyerStatusDTO updateBuyerStatusDTO) {
         transactionService.updateBuyerStatus(updateBuyerStatusDTO);
@@ -88,7 +88,7 @@ public class TransactionController {
     }
 
     // 낙찰된 물품(구매) 구매 취소하기 -> transaction_tb 테이블의 transaction_status = 1로 update
-    @PostMapping("/transactionstatusforbuyer/update")
+    @PostMapping("/s/transactionStatusForBuyer/update")
     @ResponseBody
     public ResponseEntity<?> updateTransactionStatusForBuyer(@RequestBody TransactionRequest.UpdateTransactionStatusForBuyerDTO updateTransactionStatusForBuyerDTO) {
         transactionService.updateTransactionStatusForBuyer(updateTransactionStatusForBuyerDTO);
