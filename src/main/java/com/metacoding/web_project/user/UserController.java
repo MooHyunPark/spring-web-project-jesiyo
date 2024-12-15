@@ -115,7 +115,7 @@ public class UserController {
     public  @ResponseBody Integer findPw(@RequestBody UserRequest.FindPwDTO findPwDTO) {
         int result = userService.비번찾기(findPwDTO);
         if (result > 0) { // 비밀번호 찾기 성공
-            session.setAttribute("id", result); // 사용자 이름을 세션에 저장
+            session.setAttribute("id", result);
         }
         return result; // 0 실패, 1 이상은 성공
     }
@@ -132,20 +132,16 @@ public class UserController {
         return "redirect:/";
     }
 
-    @PostMapping("/user-info/withdrawal")
-    public String withdraw(UserRequest.WithdrawDTO withdrawDTO){
-        User user = (User) session.getAttribute("sessionUser");
-        int id = user.getId();
-        userService.출금하기(id,withdrawDTO);
+    @PostMapping("/s/user-info/withdrawal")
+    public String withdraw(@AuthenticationPrincipal User user, UserRequest.WithdrawDTO withdrawDTO){
+        userService.출금하기(user.getId(),withdrawDTO);
         System.out.println("송금해야할 계좌 : "+withdrawDTO.getOutAccount());
         return "redirect:/user-info";
     }
 
-    @PostMapping("/user-info/charging")
-    public String charge(UserRequest.ChargeDTO chargeDTO){
-        User user = (User) session.getAttribute("sessionUser");
-        Integer id = user.getId();
-        userService.충전하기(id,chargeDTO);
+    @PostMapping("/s/user-info/charging")
+    public String charge(@AuthenticationPrincipal User user,UserRequest.ChargeDTO chargeDTO){
+        userService.충전하기(user.getId(),chargeDTO);
         return "redirect:/user-info";
     }
 

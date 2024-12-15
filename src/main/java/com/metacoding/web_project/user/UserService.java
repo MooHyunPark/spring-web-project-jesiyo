@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void 유저정보수정하기(int id, UserRequest.UpdateDTO updateDTO) {
+    public void 유저정보수정하기(int id, UserRequest.UpdateDTO updateDTO, UserRequest.UpdateUserAccountDTO updateUserAccountDTO) {
         userRepository.updateUser(id,updateDTO.getTel(),
                                  updateDTO.getPostNum(),
                                  updateDTO.getAddr(),
@@ -74,7 +74,6 @@ public class UserService implements UserDetailsService {
     public UserResponse.CreditDTO 내정보보기(int id) {
          UserAccount userAccount = userRepository.findByIdUserInfo(id)
                 .orElseThrow(()-> new Exception404("0"));
-
          return new UserResponse.CreditDTO(userAccount);
     }
 

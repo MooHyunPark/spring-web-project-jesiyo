@@ -49,7 +49,7 @@
                   <h1 class="modal-title fs-5" id="exampleModalLabel">충전하기</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/user-info/charging" method="post">
+                <form action="/s/user-info/charging" method="post">
                   <div class="modal-body">
                     <input type="hidden" name="hasPrice" value="{{model.hasPrice}}">
                     <div class="input-group mb-3">
@@ -89,7 +89,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <form action="/user-info/withdrawal" method="post" onsubmit="return onSubmitCheck()" ;>
+                  <form action="/s/user-info/withdrawal" method="post" onsubmit="return onSubmitCheck()" ;>
                     <div class="mb-3" style="text-align: left">
                       출금가능 금액 : {{model.hasPrice}}
                     </div>

@@ -104,7 +104,6 @@ public class UserRepository {
         q.setParameter("id", id);
 
         UserAccount userAccount = (UserAccount) q.getSingleResult();
-        em.refresh(userAccount);
         return Optional.ofNullable(userAccount);
 
     }
@@ -153,7 +152,6 @@ public class UserRepository {
         q.setParameter("id", id);
         q.setParameter("leftMoney", leftMoney);
         q.executeUpdate();
-        em.flush();
     }
 
 
@@ -162,7 +160,6 @@ public class UserRepository {
         q.setParameter("id", id);
         q.setParameter("afterMoney", afterMoney);
         q.executeUpdate();
-        em.flush();
     }
 
 }
