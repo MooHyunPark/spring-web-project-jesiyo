@@ -4,15 +4,12 @@ import com.metacoding.web_project._core.error.ex.Exception400;
 import com.metacoding.web_project._core.error.ex.Exception404;
 import com.metacoding.web_project.useraccount.UserAccount;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -48,20 +45,15 @@ public class UserService implements UserDetailsService {
         return new UserResponse.InfoDTO(user);
     }
 
-    // toEntity 만드는게 나을 듯... 나중에 수정
     @Transactional
-    public void 유저정보수정하기(int id, UserRequest.UpdateDTO updateDTO) {
+    public void 유저정보수정하기(int id, UserRequest.UpdateDTO updateDTO, UserRequest.UpdateUserAccountDTO updateUserAccountDTO) {
         userRepository.updateUser(id,updateDTO.getTel(),
-                                 updateDTO.getPostNum(),
-                                 updateDTO.getAddr(),
-                                 updateDTO.getAddrDetail(),
-                                 updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
-        );
-        userRepository.updateUserAccount(id,updateDTO.getTel(),
             updateDTO.getPostNum(),
             updateDTO.getAddr(),
-            updateDTO.getAddrDetail(),
-            updateDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
+            updateDTO.getAddrDetail()
+        );
+        userRepository.updateUserAccount(id,
+            updateUserAccountDTO.getAccount().replaceAll("[^a-zA-Z0-9]", "").trim()
         );
     }
 
@@ -80,10 +72,9 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserResponse.CreditDTO 내정보보기(int id) {
-         UserAccount userAccount = userRepository.findByIdUserInfo(id)
-                .orElseThrow(()-> new Exception404("0"));
-
-         return new UserResponse.CreditDTO(userAccount);
+        UserAccount userAccount = userRepository.findByIdUserInfo(id)
+            .orElseThrow(()-> new Exception404("0"));
+        return new UserResponse.CreditDTO(userAccount);
     }
 
     @Transactional
@@ -109,6 +100,31 @@ public class UserService implements UserDetailsService {
     public void 비번변경(int id, UserRequest.ChPwDTO pwDTO) {
         String newPassword = passwordEncoder.encode(pwDTO.getPassword());
         userRepository.changePassword(id,newPassword);
+    }
+
+    @Transactional
+    public void 출금하기(int id, UserRequest.WithdrawDTO withdrawDTO) {
+        Integer hasMoney = (Integer) withdrawDTO.getHasPrice();
+        Integer outMoney = (Integer) withdrawDTO.getOutMoney();
+        try {
+            if(hasMoney < outMoney){
+                throw new Exception404("잔액이 부족합니다. 현재 잔액: " + hasMoney + ", 출금 요청 금액: " + outMoney);
+            }
+            Integer leftMoney = hasMoney - outMoney;
+            userRepository.withdraw(id, leftMoney);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Transactional
+    public void 충전하기(Integer id, UserRequest.ChargeDTO chargeDTO) {
+        Integer hasPrice = (Integer) chargeDTO.getHasPrice();
+        Integer inMoney = (Integer) chargeDTO.getInMoney();
+
+        Integer afterMoney = hasPrice + inMoney;
+        userRepository.charge(id,afterMoney);
     }
 }
 
