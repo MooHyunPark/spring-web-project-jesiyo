@@ -149,6 +149,4 @@ public class UserController {
         return "redirect:/s/user-info/";
     }
 
-
-
 }
