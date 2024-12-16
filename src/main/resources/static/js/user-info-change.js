@@ -65,16 +65,16 @@ function sample4_execDaumPostcode() {
 async function checkDbPassword() {
     let password = document.querySelector('#password').value;
     let newpassword = document.querySelector('#pw1').value;
-    let response = await fetch('/s/user-info/pw-change',{
-        method:'post',
-        headers:{
-            'Content-Type':'application/json',
+    let response = await fetch('/s/user-info/pw-change', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({password:password, newPassword:newpassword}),
+        body: JSON.stringify({password: password, newPassword: newpassword}),
     });
     let result = await response.json();
     console.log(result);
-    if (result.result == 1){
+    if (result.result == 1) {
         alert('비밀번호 변경이 완료되었습니다.');
         location.href='/s/user-info/';
         isPasswordValid = true;
@@ -110,6 +110,7 @@ function pwCheck(password) {
         return "정상입니다";
     }
 }
+
 // 비밀번호 일치 확인
 function pwAcc() {
     const pw1 = document.querySelector('#pw1').value;
