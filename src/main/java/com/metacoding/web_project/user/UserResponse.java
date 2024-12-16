@@ -57,7 +57,9 @@ public class UserResponse {
     }
 
     @Data
-    public static class FindUserDTO{
+    public static class KakaoDTO{
         private String username;
+        private String code;
+        private String password;
     }
 }

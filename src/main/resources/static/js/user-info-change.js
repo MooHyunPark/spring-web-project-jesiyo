@@ -1,3 +1,9 @@
+let isPasswordValid = false;
+
+function onSubmitCheck(){
+    return isPasswordValid;
+}
+
 // 전화번호에 숫자만 입력가능 알림창
 function telCheck() {
     let tel = document.getElementById('tel').value;
@@ -71,8 +77,10 @@ async function checkDbPassword() {
     if (result.result == 1){
         alert('비밀번호 변경이 완료되었습니다.');
         location.href='/s/user-info/';
+        isPasswordValid = true;
     } else if (result.result == 0){
         alert('잘못된 비밀번호를 입력하셨습니다.');
+        isPasswordValid = false;
     }else{
         alert('error');
     }
