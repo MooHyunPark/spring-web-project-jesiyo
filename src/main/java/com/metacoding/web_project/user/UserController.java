@@ -149,11 +149,6 @@ public class UserController {
         return "redirect:/s/user-info/";
     }
 
-/*    @GetMapping("/oauth")
-    public String oauth(@RequestParam("code") String code){
-        User sessionUser = userService.카카오로그인(code);
-        session.setAttribute("sessionUser", sessionUser);
-        return "redirect:/";
-    }*/
+
 
 }

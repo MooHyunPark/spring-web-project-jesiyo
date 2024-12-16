@@ -131,30 +131,7 @@ public class UserService implements UserDetailsService {
         userRepository.charge(id,afterMoney);
     }
 
-/*    public User 카카오로그인(String code) {
-        // 1. 카카오 로그인 요청
-        UserResponse.KakaoDTO kakaoDTO = MyHttpUtil.post(code);
 
-        // 2. id token 검증
-        UserResponse.IdTokenDTO idTokenDTO = MyRSAUtil.verify(kakaoDTO.getIdToken());
-
-        // 3. 회원가입 유무 확인
-        String username = "kakao_"+idTokenDTO.getSub();
-        Optional<User> userOP = userRepository.findByUsername(username);
-
-        // 4. 안되어있다면 강제 회원가입
-        if(userOP.isEmpty()){
-            User user = User.builder()
-                .username(username)
-                .password(UUID.randomUUID().toString())
-                .build();
-            User userPS = userRepository.save(user);
-            return userPS;
-        }
-
-        // 5. User 객체 리턴
-        return userOP.get();
-    }*/
 }
 
 
