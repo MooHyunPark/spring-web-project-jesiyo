@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -147,6 +144,16 @@ public class UserController {
     public String charge(@AuthenticationPrincipal User user,UserRequest.ChargeDTO chargeDTO){
         userService.충전하기(user.getId(),chargeDTO);
         return "redirect:/s/user-info/";
+    }
+
+    @PostMapping("/check-account")
+    public ResponseEntity<Map<String, Object>> checkAccount(@RequestBody UserRequest.CheckAccountDTO checkAccountDTO) {
+
+        String bankNum = checkAccountDTO.getBankNum();
+        String bankCode = checkAccountDTO.getBankCode();
+
+        Map<String, Object> response = userService.계좌주찾기(bankCode, bankNum);
+        return ResponseEntity.ok(response);
     }
 
 }
