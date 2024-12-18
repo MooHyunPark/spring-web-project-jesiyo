@@ -43,15 +43,15 @@ public class RecodeRepository {
         String finalSql = baseSql + """
         GROUP BY r.buyer_id, r.goods_id, r.success_status 
         ORDER BY MAX(r.id) 
-        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;
+        LIMIT ? offset ?;
         """;
 
         // Query 객체 생성 및 매개변수 설정
         Query q = em.createNativeQuery(finalSql, Recode.class);
         q.setParameter(1, userId);
         q.setParameter(2, "%" + search + "%");
-        q.setParameter(3, offset);
-        q.setParameter(4, limit);
+        q.setParameter(3, limit);
+        q.setParameter(4, offset);
 
         // 쿼리 실행 및 결과 반환
         return q.getResultList();
