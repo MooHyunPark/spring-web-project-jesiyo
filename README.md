@@ -31,7 +31,7 @@
 
 
 <br><br>
-https://youtu.be/jFeC4igBcF8?si=TA8P59SjZSkA2FJ4
+[![Watch the video](https://img.youtube.com/vi/jFeC4igBcF8/0.jpg)](https://www.youtube.com/watch?v=jFeC4igBcF8)
 
 <br><br>
 
